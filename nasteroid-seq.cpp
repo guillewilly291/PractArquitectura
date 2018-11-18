@@ -29,11 +29,7 @@ int main()
     cout<< "Introduzca el numero de asteroides"<<endl;
     cin >> num_asteroides;
     while(num_asteroides<0){
-<<<<<<< HEAD
-        cout<< "El numero de asteroides debe ser mayor que 0 ";
-=======
         cout<< "El numero de asteroides debe ser mayor que 0";
->>>>>>> b1a13f27e8807493f97ee193d09d67aecabfbc67
         cin >> num_asteroides;
     }
     cout << "Introduzca el numero de iteraciones" << endl;
