@@ -3,7 +3,6 @@
         {
             "name": "Win32",
             "includePath": [
-<<<<<<< HEAD
                 "${workspaceFolder}/**"
             ],
             "defines": [
@@ -15,25 +14,6 @@
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"
-=======
-             
-                "${workspaceRoot}"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE"
-            ],
-            "compilerPath": "C:\\mingw-w64\\bin\\gcc.exe",
-            "intelliSenseMode": "msvc-x64",
-            "browse": {
-                "path": [
-                    "${workspaceRoot}",
-                    "E:\\MinGW\\lib\\gcc\\mingw32\\6.3.0\\include\\c++"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            }
->>>>>>> b1a13f27e8807493f97ee193d09d67aecabfbc67
         }
     ],
     "version": 4
