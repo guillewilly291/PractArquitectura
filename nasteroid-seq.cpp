@@ -1,4 +1,5 @@
-
+//Hack para C++ en general : http://c.conclase.net/curso/?cap=000
+//programacion punteros HACK: https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Punteros
 #include <iostream>
 #include <random>
 
@@ -23,8 +24,16 @@ class asteroides
     double masa;
     
 };
+class planetas
+{
+  public:
+    double pos_x;
+    double pos_y;
+    double masa;
+};
 
-asteroides *nasteroidSeq(int, int, int, int);
+asteroides *nasteroidSeq(int, int);
+planetas *createPlanet(int, int);
 
 int main(int argc, char const *argv[])
 {
@@ -56,14 +65,14 @@ int main(int argc, char const *argv[])
     cin >> seed;
     asteroides *arrayAsteroides;
 
-    arrayAsteroides = nasteroidSeq(num_asteroides, num_iteraciones, num_planetas, seed);
-    cout << "Masa de prubea = " <<  arrayAsteroides[0].masa << endl;
+    arrayAsteroides = nasteroidSeq(num_asteroides,seed);
+    cout << "Masa de prueba = " <<  arrayAsteroides[0].masa << endl;
             
         return 0;
 }
 
 
-asteroides *nasteroidSeq(int num_asteroides, int num_iteraciones, int num_planetas, int seed){
+asteroides *nasteroidSeq(int num_asteroides, int seed){
     asteroides *devolver;
     asteroides arrayAster[num_asteroides];
     default_random_engine re{seed}; // inicializamos el generador
@@ -79,7 +88,45 @@ asteroides *nasteroidSeq(int num_asteroides, int num_iteraciones, int num_planet
 
 
 
-    return devolver;
+     return devolver;
     
 }
 
+planetas *createPlanet( int num_planetas, int seed)
+{
+    planetas *devolver;
+    planetas arrayPlanet[num_planetas];
+    default_random_engine re{seed}; // inicializamos el generador
+
+    for (int i = 0; i < num_planetas; i++)
+    {
+        if(i%4==0) //Eje Izqui
+        {
+            arrayPlanet[i].pos_x = 0;
+            arrayPlanet[i].pos_y = ydist(re);
+            arrayPlanet[i].masa = mdist(re) * 10;
+        }
+        if (i % 4 == 1) //Eje Arriba
+        {
+            arrayPlanet[i].pos_x = xdist(re);
+            arrayPlanet[i].pos_y = 0;
+            arrayPlanet[i].masa = mdist(re) * 10;
+        }
+        if (i % 4 == 2) //Eje Derecha 
+        {
+            arrayPlanet[i].pos_x = xdist(re);
+            arrayPlanet[i].pos_y = ydist(re);
+            arrayPlanet[i].masa = mdist(re) * 10;
+        }
+        if (i % 4 == 3) //Eje Abajo
+        {
+            arrayPlanet[i].pos_x = xdist(re);
+            arrayPlanet[i].pos_y = ydist(re);
+            arrayPlanet[i].masa = mdist(re) * 10;
+        }
+    }
+
+    devolver = arrayPlanet;
+
+    return devolver;
+}
