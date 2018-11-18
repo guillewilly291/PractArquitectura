@@ -5,7 +5,7 @@
 using namespace std; // para evitar tener que poner std::cout cada vez que se quiera imprimir
 
 
-int nasteroidSeq(int num_asteroides, int num_iteraciones, int num_planetas, int seed);
+
 int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(200,
                                                             std ::numeric_limits<double>::max())};
@@ -21,10 +21,15 @@ class asteroides
     double pos_x;
     double pos_y;
     double masa;
+    
 };
 
-int main()
+asteroides *nasteroidSeq(int, int, int, int);
+
+int main(int argc, char const *argv[])
 {
+
+  
     int num_asteroides, num_iteraciones, num_planetas, seed;
     cout<< "Introduzca el numero de asteroides"<<endl;
     cin >> num_asteroides;
@@ -49,22 +54,32 @@ int main()
     }
     cout << "Introduzca el numero de semilla" << endl;
     cin >> seed;
+    asteroides *arrayAsteroides;
 
-    nasteroidSeq(num_asteroides, num_iteraciones, num_planetas, seed);
-    return 0;
-    
+    arrayAsteroides = nasteroidSeq(num_asteroides, num_iteraciones, num_planetas, seed);
+    cout << "Masa de prubea = " <<  arrayAsteroides[0].masa << endl;
+            
+        return 0;
 }
 
 
-int nasteroidSeq(int num_asteroides, int num_iteraciones, int num_planetas, int seed){
+asteroides *nasteroidSeq(int num_asteroides, int num_iteraciones, int num_planetas, int seed){
+    asteroides *devolver;
     asteroides arrayAster[num_asteroides];
-    default_random_engine re{seed};// inicializamos el generador
+    default_random_engine re{seed}; // inicializamos el generador
+
     for(int i = 0; i < num_asteroides; i++)
     {
         arrayAster[i].pos_x= xdist(re);
         arrayAster[i].pos_y= ydist(re);
         arrayAster[i].masa=mdist(re);
     }
+
+    devolver = arrayAster;
+
+
+
+    return devolver;
     
 }
 
