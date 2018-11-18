@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <random>
 
@@ -28,7 +29,7 @@ int main()
     cout<< "Introduzca el numero de asteroides"<<endl;
     cin >> num_asteroides;
     while(num_asteroides<0){
-        cout<< "El numero de asteroides debe ser mayor que 0 asdasd ";
+        cout<< "El numero de asteroides debe ser mayor que 0 ";
         cin >> num_asteroides;
     }
     cout << "Introduzca el numero de iteraciones" << endl;
