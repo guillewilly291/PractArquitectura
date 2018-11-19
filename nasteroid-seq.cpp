@@ -1,20 +1,9 @@
 
-#include <fstream>
-#include <iostream>
-#include <random>
+#include <fstream> //escribir en un archivo 
+#include <iostream> //basica
+#include <random> //numeros aleatorios
 
 using namespace std; // para evitar tener que poner std::cout cada vez que se quiera imprimir
-
-
-
-int calcParameters(int seed);
-uniform_real_distribution<double> xdist{0.0, std::nextafter(200,
-                                                            std ::numeric_limits<double>::max())};
-uniform_real_distribution<double> ydist{0.0, std::nextafter(200,
-                                                            std ::numeric_limits<double>::max())};
-normal_distribution<double> mdist{1000, 50};
-//ESTO ES UN TESTTTT DE FELIX
-
 
 class asteroides
 {
@@ -35,18 +24,36 @@ class planetas
 asteroides *nasteroidSeq(int, int);
 planetas *createPlanet(int, int);
 
+void imprimirArchivoPrincipal(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, planetas *arrayPlanetas);
+
+int calcParameters(int seed);
+uniform_real_distribution<double> xdist{0.0, std::nextafter(200,std ::numeric_limits<double>::max())};
+uniform_real_distribution<double> ydist{0.0, std::nextafter(200,std ::numeric_limits<double>::max())};
+normal_distribution<double> mdist{1000, 50};
+
 int main(int argc, char const *argv[])
 {
     
     int num_asteroides, num_iteraciones, num_planetas, seed;
 
     /* Para ejecutar el programa como es debido se añade esto y se elimina lo de abajo, si seguimos para poder probar y tal usamos de momento lo dee abajo */
-    num_asteroides = atoi(argv[1]);
-    num_iteraciones  = atoi(argv[2]);
+  /*  num_asteroides = atoi(argv[1]);//atoi es para pasar de string a numero
+    num_iteraciones =atoi(argv[2]);
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
+*/
+    num_asteroides = 3; //atoi es para pasar de string a numero
+    num_iteraciones = 3;
+    num_planetas = 3;
+    seed = 3;
+
+    cout << "Asteroides" << num_asteroides << endl;
+    cout << num_iteraciones << endl;
+    cout << num_planetas << endl;
+    cout << seed << endl;
 
     if (num_asteroides < 0 || num_planetas < 0 || num_iteraciones < 0 || seed < 0)
+
     {
 
         cout << "nasteroids-seq: Wrong arguments.\n"
@@ -56,45 +63,9 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
-
- /*   fstream archivo; Prueba de momento seguir investigando 
-
-    archivo.open("init_conf.txt");
-
-    archivo << num_asteroides ;
-
-    archivo.close();
-
-    */
-
-                       /*
-    cout << "Introduzca el numero de asteroides " << endl;
-    cin >> num_asteroides;
-    while(num_asteroides<0){
-        cout<< "El numero de asteroides debe ser mayor que 0";
-        cin >> num_asteroides;
-    }
-    cout << "Introduzca el numero de iteraciones" << endl;
-    cin >> num_iteraciones;
-    while (num_iteraciones < 0)
-    {
-        cout << "El numero de iteraciones debe ser mayor que 0";
-        cin >> num_iteraciones;
-    }
     
-    cout << "Introduzca el numero de planetas" << endl;
-    cin >> num_planetas;
-    while (num_planetas < 0)
-    {
-        cout << "El numero de planetas debe ser mayor que 0";
-        cin>> num_planetas;
-    }
-    cout << "Introduzca el numero de semilla" << endl;
-    cin >> seed;
- */
 
-                       asteroides *
-                   arrayAsteroides;
+    asteroides * arrayAsteroides;
     planetas *arrayPlanetas;
 
     arrayAsteroides = nasteroidSeq(num_asteroides,seed);
@@ -102,8 +73,39 @@ int main(int argc, char const *argv[])
 
     arrayPlanetas = createPlanet(num_planetas, seed);
     cout << "Masa de prueba Planeta = " << arrayPlanetas[0].masa << endl;
+
+    imprimirArchivoPrincipal(num_asteroides, num_planetas, arrayAsteroides, arrayPlanetas);
+
     return 0;
 }
+
+
+
+
+
+void imprimirArchivoPrincipal(int num_asteroides, int num_planetas,  asteroides *arrayAsteroides, planetas *arrayPlanetas)
+{
+
+    ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
+
+       
+
+    for(int i = 0; i < num_asteroides ; i++){
+
+        myfile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].masa << endl;
+                        
+    }
+
+    for (int i = 0; i < num_planetas; i++)
+    {
+
+        myfile << arrayPlanetas[i].pos_x << " " << arrayPlanetas[i].pos_y <<  endl;
+    }
+
+    myfile.close();        
+}
+
+
 
 
 asteroides *nasteroidSeq(int num_asteroides, int seed){
