@@ -1,5 +1,5 @@
-//Hack para C++ en general : http://c.conclase.net/curso/?cap=000
-//programacion punteros HACK: https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Punteros
+
+#include <fstream>
 #include <iostream>
 #include <random>
 
@@ -29,7 +29,7 @@ class planetas
   public:
     double pos_x;
     double pos_y;
-    double masa;
+    double masa;    
 };
 
 asteroides *nasteroidSeq(int, int);
@@ -37,10 +37,38 @@ planetas *createPlanet(int, int);
 
 int main(int argc, char const *argv[])
 {
-
-  
+    
     int num_asteroides, num_iteraciones, num_planetas, seed;
-    cout<< "Introduzca el numero de asteroides"<<endl;
+
+    /* Para ejecutar el programa como es debido se añade esto y se elimina lo de abajo, si seguimos para poder probar y tal usamos de momento lo dee abajo */
+    num_asteroides = atoi(argv[1]);
+    num_iteraciones  = atoi(argv[2]);
+    num_planetas  = atoi(argv[3]);
+    seed  = atoi(argv[4]);
+
+    if (num_asteroides < 0 || num_planetas < 0 || num_iteraciones < 0 || seed < 0)
+    {
+
+        cout << "nasteroids-seq: Wrong arguments.\n"
+             << "Correct use :\n"
+             << "nasteroids - seq num_asteroides num_iteraciones num_planetas semilla " << endl;
+
+        return -1;
+    }
+
+
+ /*   fstream archivo; Prueba de momento seguir investigando 
+
+    archivo.open("init_conf.txt");
+
+    archivo << num_asteroides ;
+
+    archivo.close();
+
+    */
+
+                       /*
+    cout << "Introduzca el numero de asteroides " << endl;
     cin >> num_asteroides;
     while(num_asteroides<0){
         cout<< "El numero de asteroides debe ser mayor que 0";
@@ -63,12 +91,18 @@ int main(int argc, char const *argv[])
     }
     cout << "Introduzca el numero de semilla" << endl;
     cin >> seed;
-    asteroides *arrayAsteroides;
+ */
+
+                       asteroides *
+                   arrayAsteroides;
+    planetas *arrayPlanetas;
 
     arrayAsteroides = nasteroidSeq(num_asteroides,seed);
-    cout << "Masa de prueba = " <<  arrayAsteroides[0].masa << endl;
-            
-        return 0;
+    cout << "Masa de prueba Asteroide = " <<  arrayAsteroides[0].masa << endl;
+
+    arrayPlanetas = createPlanet(num_planetas, seed);
+    cout << "Masa de prueba Planeta = " << arrayPlanetas[0].masa << endl;
+    return 0;
 }
 
 
@@ -109,19 +143,19 @@ planetas *createPlanet( int num_planetas, int seed)
         if (i % 4 == 1) //Eje Arriba
         {
             arrayPlanet[i].pos_x = xdist(re);
-            arrayPlanet[i].pos_y = 0;
+            arrayPlanet[i].pos_y = 200;
             arrayPlanet[i].masa = mdist(re) * 10;
         }
         if (i % 4 == 2) //Eje Derecha 
         {
-            arrayPlanet[i].pos_x = xdist(re);
+            arrayPlanet[i].pos_x = 200;
             arrayPlanet[i].pos_y = ydist(re);
             arrayPlanet[i].masa = mdist(re) * 10;
         }
         if (i % 4 == 3) //Eje Abajo
         {
             arrayPlanet[i].pos_x = xdist(re);
-            arrayPlanet[i].pos_y = ydist(re);
+            arrayPlanet[i].pos_y = 0;
             arrayPlanet[i].masa = mdist(re) * 10;
         }
     }
