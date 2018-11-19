@@ -65,8 +65,8 @@ int main(int argc, char const *argv[])
 
     
 
-    asteroides *arrayAsteroides=(asteroides*)malloc(4*24);
-    planetas *arrayPlanetas=(planetas*)malloc(4*24);
+    asteroides *arrayAsteroides=(asteroides*)malloc(num_asteroides*sizeof(asteroides));//reservamos la memoria necesaria para cada array( que será igual a lo que ocuppa un
+    planetas *arrayPlanetas = (planetas *)malloc(num_planetas * sizeof(planetas));     //aster/planeta * losque haya)
 
     arrayAsteroides = createAsteroid(arrayAsteroides,num_asteroides, seed);
     arrayPlanetas = createPlanet(arrayPlanetas,num_planetas, seed);
