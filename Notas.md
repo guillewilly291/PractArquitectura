@@ -30,6 +30,6 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
 
     -Hack para C++ en general : http://c.conclase.net/curso/?cap=000
     -Programacion punteros HACK: https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Punteros
-
+    -Errores típico con punteros: https://www.fing.edu.uy/inco/cursos/prog3/utils/Punteros.pdf
     -Posible Hack para entrada y salida: https://es.wikipedia.org/wiki/C%2B%2B#Biblioteca_de_entrada_y_salida
 

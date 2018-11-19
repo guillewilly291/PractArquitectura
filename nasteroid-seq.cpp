@@ -21,8 +21,8 @@ class planetas
     double masa;    
 };
 
-asteroides *nasteroidSeq(int, int);
-planetas *createPlanet(int, int);
+asteroides *createAsteroid(asteroides *arrayAsteroides,int, int);
+planetas *createPlanet(planetas *arrayAsteroides,int, int);
 
 void imprimirArchivoPrincipal(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, planetas *arrayPlanetas);
 
@@ -65,104 +65,88 @@ int main(int argc, char const *argv[])
 
     
 
-    asteroides * arrayAsteroides;
-    planetas *arrayPlanetas;
+    asteroides *arrayAsteroides=(asteroides*)malloc(4*24);
+    planetas *arrayPlanetas=(planetas*)malloc(4*24);
 
-    arrayAsteroides = nasteroidSeq(num_asteroides,seed);
-    cout << "Masa de prueba Asteroide = " <<  arrayAsteroides[0].masa << endl;
-
-    arrayPlanetas = createPlanet(num_planetas, seed);
-    cout << "Masa de prueba Planeta = " << arrayPlanetas[0].masa << endl;
-
-    imprimirArchivoPrincipal(num_asteroides, num_planetas, arrayAsteroides, arrayPlanetas);
-
-    return 0;
-}
-
-
-
-
-
-void imprimirArchivoPrincipal(int num_asteroides, int num_planetas,  asteroides *arrayAsteroides, planetas *arrayPlanetas)
-{
+    arrayAsteroides = createAsteroid(arrayAsteroides,num_asteroides, seed);
+    arrayPlanetas = createPlanet(arrayPlanetas,num_planetas, seed);
 
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
 
-       
+    for(int i = 0 ; i < argc ; i++)
+    {
+        myfile << argv[i] << " " ; 
+    }
 
-    for(int i = 0; i < num_asteroides ; i++){
+    cout << endl;
 
+    for (int i = 0; i < num_asteroides; i++)
+    {
         myfile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].masa << endl;
-                        
     }
 
     for (int i = 0; i < num_planetas; i++)
     {
-
-        myfile << arrayPlanetas[i].pos_x << " " << arrayPlanetas[i].pos_y <<  endl;
+        myfile << arrayPlanetas[i].pos_x << " " << arrayPlanetas[i].pos_y << endl;
     }
+    myfile.close();
 
-    myfile.close();        
+    return 0;
 }
 
-
-
-
-asteroides *nasteroidSeq(int num_asteroides, int seed){
-    asteroides *devolver;
-    asteroides arrayAster[num_asteroides];
+asteroides *createAsteroid(asteroides *arrayAsteroides,int num_asteroides, int seed)
+{
     default_random_engine re{seed}; // inicializamos el generador
 
     for(int i = 0; i < num_asteroides; i++)
     {
-        arrayAster[i].pos_x= xdist(re);
-        arrayAster[i].pos_y= ydist(re);
-        arrayAster[i].masa=mdist(re);
+        arrayAsteroides[i].pos_x= xdist(re);
+        arrayAsteroides[i].pos_y = ydist(re);
+        arrayAsteroides[i].masa = mdist(re);
     }
 
-    devolver = arrayAster;
+   
 
 
 
-     return devolver;
+    return arrayAsteroides;
     
 }
 
-planetas *createPlanet( int num_planetas, int seed)
+planetas *createPlanet(planetas *arrayPlanetas, int num_planetas, int seed)
 {
-    planetas *devolver;
-    planetas arrayPlanet[num_planetas];
+    
     default_random_engine re{seed}; // inicializamos el generador
 
     for (int i = 0; i < num_planetas; i++)
     {
         if(i%4==0) //Eje Izqui
         {
-            arrayPlanet[i].pos_x = 0;
-            arrayPlanet[i].pos_y = ydist(re);
-            arrayPlanet[i].masa = mdist(re) * 10;
+            arrayPlanetas[i].pos_x = 0;
+            arrayPlanetas[i].pos_y = ydist(re);
+            arrayPlanetas[i].masa = mdist(re) * 10;
         }
         if (i % 4 == 1) //Eje Arriba
         {
-            arrayPlanet[i].pos_x = xdist(re);
-            arrayPlanet[i].pos_y = 200;
-            arrayPlanet[i].masa = mdist(re) * 10;
+            arrayPlanetas[i].pos_x = xdist(re);
+            arrayPlanetas[i].pos_y = 200;
+            arrayPlanetas[i].masa = mdist(re) * 10;
         }
         if (i % 4 == 2) //Eje Derecha 
         {
-            arrayPlanet[i].pos_x = 200;
-            arrayPlanet[i].pos_y = ydist(re);
-            arrayPlanet[i].masa = mdist(re) * 10;
+            arrayPlanetas[i].pos_x = 200;
+            arrayPlanetas[i].pos_y = ydist(re);
+            arrayPlanetas[i].masa = mdist(re) * 10;
         }
         if (i % 4 == 3) //Eje Abajo
         {
-            arrayPlanet[i].pos_x = xdist(re);
-            arrayPlanet[i].pos_y = 0;
-            arrayPlanet[i].masa = mdist(re) * 10;
+            arrayPlanetas[i].pos_x = xdist(re);
+            arrayPlanetas[i].pos_y = 0;
+            arrayPlanetas[i].masa = mdist(re) * 10;
         }
     }
 
-    devolver = arrayPlanet;
+  
 
-    return devolver;
+    return arrayPlanetas;
 }
