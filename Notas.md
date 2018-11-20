@@ -16,6 +16,8 @@ const float ....
 
 XXXX-Intentar pasar los parametros del programa mediante la consola y no mediante cin, cout. ---> Listo 
 
+-Hay que poner el calculateMovNormal solo cuando la distancioa sea de 2 o mayor
+
 
 
 # Ejecutar
@@ -32,4 +34,9 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
     -Programacion punteros HACK: https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Punteros
     -Errores típico con punteros: https://www.fing.edu.uy/inco/cursos/prog3/utils/Punteros.pdf
     -Posible Hack para entrada y salida: https://es.wikipedia.org/wiki/C%2B%2B#Biblioteca_de_entrada_y_salida
+    -https://www.aprenderaprogramar.pro/2017/10/arrays-bidimensionales.html
 
+
+
+# POSIBLES MEJORAS
+- Llamar "Asteroide" al objeto "Asteroides" dado que el plural puede dar lugar a confusión - Tener una clase que se llame Cuerpo que tenga campos(tipo, ejeX, ejeY, masa) 
