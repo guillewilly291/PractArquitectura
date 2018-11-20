@@ -1,4 +1,4 @@
-E:\Archivos de Programa\Visual Studio\Practica Arquitectura\PractArquitectura\a.exe 78.9227 75.1901 986.029
+E:\Microsoft VS Code\proyectos\PractArquitectura\a.exe 2 12 3 2 78.9227 75.1901 986.029
 160.816 111.65 1004.73
 20.7433 117.82 1025.02
 0 78.9227

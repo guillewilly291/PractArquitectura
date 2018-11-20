@@ -24,7 +24,6 @@ class planetas
 asteroides *createAsteroid(asteroides *arrayAsteroides,int, int);
 planetas *createPlanet(planetas *arrayAsteroides,int, int);
 
-void imprimirArchivoPrincipal(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, planetas *arrayPlanetas);
 
 int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(200,std ::numeric_limits<double>::max())};
@@ -46,14 +45,8 @@ int main(int argc, char const *argv[])
     num_iteraciones = 3;
     num_planetas = 3;
     seed = 3;
-
-    cout << "Asteroides" << num_asteroides << endl;
-    cout << num_iteraciones << endl;
-    cout << num_planetas << endl;
-    cout << seed << endl;
-
-    if (num_asteroides < 0 || num_planetas < 0 || num_iteraciones < 0 || seed < 0)
-
+    
+    if (num_asteroides < 0 || num_planetas < 0 || num_iteraciones < 0 || seed < 0 || argc < 5)
     {
 
         cout << "nasteroids-seq: Wrong arguments.\n"
