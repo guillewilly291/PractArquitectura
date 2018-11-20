@@ -66,12 +66,12 @@ int main(int argc, char const *argv[])
 
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
 
-    for(int i = 0 ; i < argc ; i++)
+    for(int i =  1; i < argc ; i++)
     {
         myfile << argv[i] << " " ; 
     }
 
-    cout << endl;
+   myfile  <<endl;
 
     for (int i = 0; i < num_asteroides; i++)
     {
