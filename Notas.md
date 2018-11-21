@@ -17,7 +17,7 @@ const float ....
 XXXX-Intentar pasar los parametros del programa mediante la consola y no mediante cin, cout. ---> Listo 
 
 -Hay que poner el calculateMovNormal solo cuando la distancioa sea de 2 o mayor
-
+-en el movimiento normal, si la distancia es mayor a 2 no se debe calcular(?¿?fin de la ejecucion? devuelve 0?¿?¿)
 
 
 # Ejecutar
@@ -35,7 +35,8 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
     -Errores típico con punteros: https://www.fing.edu.uy/inco/cursos/prog3/utils/Punteros.pdf
     -Posible Hack para entrada y salida: https://es.wikipedia.org/wiki/C%2B%2B#Biblioteca_de_entrada_y_salida
     -https://www.aprenderaprogramar.pro/2017/10/arrays-bidimensionales.html
-
+    -Matrices y punteros C++: https://ronnyml.wordpress.com/2009/07/04/vectores-matrices-y-punteros-en-c/
+    -Problema con encontrar length: https://stackoverflow.com/questions/4108313/how-do-i-find-the-length-of-an-array
 
 
 # POSIBLES MEJORAS
