@@ -140,7 +140,8 @@ planetas *createPlanet(planetas *arrayPlanetas, int num_planetas, int seed)
 
 double **tablaDeFuerzas(int num_asteroides, int num_planetas)
 {
-    double **devolver;
+    
+    
     int cuerposTotales = num_asteroides + num_planetas;
     double tablaF[cuerposTotales][cuerposTotales];
 
