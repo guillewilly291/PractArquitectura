@@ -41,6 +41,8 @@ double calculateMovNormal(asteroides cuerpo1, asteroides cuerpo2);
 double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *, asteroides *);
 double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *, asteroides *);
 
+void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides);
+
 int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(200, std ::numeric_limits<double>::max())};
 uniform_real_distribution<double> ydist{0.0, std::nextafter(200, std ::numeric_limits<double>::max())};
@@ -111,13 +113,16 @@ int main(int argc, char const *argv[])
         cout << "" << endl;
     }
 
+    calculateVelocidad(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
+
     /*  for (int i = 1; i < argc; i++)
     {
         myfile << argv[i] << " ";
     }
   */
 
-    myfile << endl;
+    myfile
+        << endl;
 
     for (int i = 0; i < num_asteroides; i++)
     {
@@ -373,19 +378,40 @@ double calculateMovNormal(planetas cuerpo1, planetas cuerpo2)
     return angulo;
 }
 
-void calculateVelocidad(double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides)
+void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides)
 {
-    
-    int tamaño = sizeof(matrizFuerzasX) / sizeof(double);
-    cout << "tamaño matriz: " << tamaño;
+    cout << sizeof(matrizFuerzasX);
+    int tamano = num_asteroides+num_planetas;
+    cout << "tamaño matriz: " << tamano;
     double accel_x=0.0;
-    for (int i = 0; i < tamaño; i++)
-    { 
-        for (int j = 0; j < tamaño; j++)
+    double accel_y = 0.0;
+    double sumatorio_Fx = 0.0;
+    double sumatorio_Fy = 0.0;
+    double velocidad_x = 0.0;
+    double velocidad_y = 0.0;
+    double posicion_x = 0.0;
+    double posicion_y = 0.0;
+
+    for (int i = 0; i < tamano; i++)
+    {
+        sumatorio_Fx = 0.0;
+        sumatorio_Fy = 0.0;
+        for (int j = 0; j < tamano; j++)
         {
-            accel_x+=;
+            sumatorio_Fx += matrizFuerzasX[i][j];
+            sumatorio_Fy += matrizFuerzasY[i][j];
         }
-        arrayAsteroides
+        accel_x = sumatorio_Fx / arrayAsteroides[i].masa; //calculamos la aceleración
+        accel_y = sumatorio_Fy / arrayAsteroides[i].masa;
+        velocidad_x = arrayAsteroides[i].vel_x + accel_x; //* tiempo;  <------- hay que multiplicar por tiempo. De donde saco la varianle tiempo? //calculamos la velocidad
+        velocidad_y = arrayAsteroides[i].vel_y + accel_y; //* tiempo;  <------- hay que multiplicar por tiempo. De donde saco la varianle tiempo?
+        posicion_x = arrayAsteroides[i].pos_x + velocidad_x; //*tiempo //calculamos la nueva posicion
+        posicion_y = arrayAsteroides[i].pos_y + velocidad_y; //*tiempo //calculamos la nueva posicion
+
+        arrayAsteroides[i].vel_x = velocidad_x; //refrescamos los datos de los objetos
+        arrayAsteroides[i].vel_y = velocidad_y;
+        arrayAsteroides[i].pos_x = posicion_x;
+        arrayAsteroides[i].pos_y = posicion_y;
     }
     
 }
