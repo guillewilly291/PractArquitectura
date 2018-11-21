@@ -27,6 +27,7 @@ double calculateDistance(asteroides, asteroides);
 double calculateDistance(asteroides, planetas);
 double calculateDistance(planetas, asteroides);
 double calculateDistance(planetas, planetas);
+double **tablaDeFuerzas(int num_asteroides, int num_planetas);
 
 int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(200, std ::numeric_limits<double>::max())};
@@ -48,6 +49,7 @@ int main(int argc, char const *argv[])
     num_iteraciones = 3;
     num_planetas = 3;
     seed = 3;
+    argc=5;
 
     if (num_asteroides < 0 || num_planetas < 0 || num_iteraciones < 0 || seed < 0 || argc < 5)
     {
@@ -67,7 +69,12 @@ int main(int argc, char const *argv[])
 
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
 
-    for (int i = 1; i < argc; i++)
+    double **matrizFuerzas;
+        
+    matrizFuerzas=tablaDeFuerzas(3,3);
+
+    cout << "ESTO ES : " << matrizFuerzas[2][3];
+        for (int i = 1; i < argc; i++)
     {
         myfile << argv[i] << " ";
     }
@@ -138,13 +145,19 @@ planetas *createPlanet(planetas *arrayPlanetas, int num_planetas, int seed)
     return arrayPlanetas;
 }
 
-double **tablaDeFuerzas(int num_asteroides, int num_planetas)
+double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides)
 {
-    
-    
-    int cuerposTotales = num_asteroides + num_planetas;
-    double tablaF[cuerposTotales][cuerposTotales];
 
+    int cuerposTotales = num_asteroides + num_planetas;
+    double **tablaF;
+        //double tablaF[cuerposTotales][cuerposTotales];
+    tablaF = new double *[cuerposTotales];
+    for (int i = 0; i < cuerposTotales; i++)
+    {
+        tablaF[i] = new double[cuerposTotales];
+    }
+
+    cout << "Elementos de la Matriz con sus direcciones: " << endl;
     for (int i = 0; i < cuerposTotales; i++)
     {
         for (int j = i + 1; j < cuerposTotales; j++)
@@ -155,14 +168,44 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas)
             }
             else
             {
-                    tablaF[i][j] = 9;  //en el nueve hay que poner el resultado de la fuerza
-                    tablaF[j][i] = -9; //la fuerza que hace j sobre i es la inversa que la que ejerce i sobre j
-                
+
+                if(i< num_asteroides && j < num_asteroides){
+
+                    tablaF[i][j] = calculateDistance(arrayAsteroides[i], arrayAsteroides[j]); //en el nueve hay que poner el resultado de la fuerza
+                    tablaF[j][i] = -calculateDistance(arrayAsteroides[i], arrayAsteroides[j]); //la fuerza que hace j sobre i es la inversa que la que ejerce i sobre j
+
+                }else if(i< num_asteroides && j > num_asteroides){
+
+                    tablaF[i][j] = calculateDistance(arrayAsteroides[i], arrayPlanetas[j]);  
+                    tablaF[j][i] = -calculateDistance(arrayAsteroides[i], arrayPlanetas[j]); 
+
+                }else if(i > num_asteroides && j < num_asteroides){
+
+                    tablaF[i][j] = calculateDistance(arrayPlanetas[i], arrayAsteroides[j]);
+                    tablaF[j][i] = -calculateDistance(arrayPlanetas[i] , arrayAsteroides[j]);
+                }else{
+
+                    tablaF[i][j] = calculateDistance(arrayPlanetas[i], arrayPlanetas[j]);
+                    tablaF[j][i] = -calculateDistance(arrayPlanetas[i], arrayPlanetas[j]);
+                }
+               
             }
         }
+        
     }
-    return devolver;
+        for(int i = 0; i < cuerposTotales; i++)
+        {
+            
+            for(int j = 0; j < cuerposTotales; j++)
+            {
+                cout<<tablaF[i][j];
+            }
+            cout<<""<<endl;
+        }
+        
+    return tablaF;
 }
+
 
 double calculateDistance(asteroides cuerpo1, asteroides cuerpo2)
 { //distancia de cuerpo1 a cuerpo2
