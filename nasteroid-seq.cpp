@@ -27,7 +27,7 @@ double calculateDistance(asteroides, asteroides);
 double calculateDistance(asteroides, planetas);
 double calculateDistance(planetas, asteroides);
 double calculateDistance(planetas, planetas);
-double **tablaDeFuerzas(int num_asteroides, int num_planetas);
+double **tablaDeFuerzas(int num_asteroides, int num_planetas,planetas *,asteroides*);
 
 int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(200, std ::numeric_limits<double>::max())};
@@ -70,10 +70,11 @@ int main(int argc, char const *argv[])
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
 
     double **matrizFuerzas;
-        
-    matrizFuerzas=tablaDeFuerzas(3,3);
 
-    cout << "ESTO ES : " << matrizFuerzas[2][3];
+    matrizFuerzas = tablaDeFuerzas(3, 3, arrayPlanetas , arrayAsteroides);
+
+    
+
         for (int i = 1; i < argc; i++)
     {
         myfile << argv[i] << " ";
@@ -196,9 +197,9 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
         for(int i = 0; i < cuerposTotales; i++)
         {
             
-            for(int j = 0; j < cuerposTotales; j++)
+            for(int j = i + 1; j < cuerposTotales; j++)
             {
-                cout<<tablaF[i][j];
+                cout << tablaF[i][j] << " ";
             }
             cout<<""<<endl;
         }
