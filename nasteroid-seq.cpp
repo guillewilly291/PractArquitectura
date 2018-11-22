@@ -125,7 +125,7 @@ int main(int argc, char const *argv[])
             
     }
 
-    for(int i = 0 ; i < 3 ; i++){ //BUucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
+    for(int i = 0 ; i < num_iteraciones ; i++){ //BUucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
         calculateVelocidad(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
         matrizFuerzasX = tablaDeFuerzasX(3, 3, arrayPlanetas, arrayAsteroides);
         matrizFuerzasY = tablaDeFuerzasY(3, 3, arrayPlanetas, arrayAsteroides);
