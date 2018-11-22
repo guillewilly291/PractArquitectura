@@ -19,6 +19,14 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
 -Hay que poner el calculateMovNormal solo cuando la distancioa sea de 2 o mayor
 -en el movimiento normal, si la distancia es mayor a 2 no se debe calcular(?¿?fin de la ejecucion? devuelve 0?¿?¿)
 
+# Mapa
+
+(0, 0)-- -------(200, 0)  
+|                   |
+|                   |
+(0, 200)-- ----(200, 200)
+
+https://www.pccomponentes.com/samsung-960-evo-nvme-m2-ssd-pci-e-500gb
 
 # Ejecutar
 
@@ -28,7 +36,8 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
 
 
 
-# Paginas-C++
+
+# Paginas Hack C++
 
     -Hack para C++ en general : http://c.conclase.net/curso/?cap=000
     -Programacion punteros HACK: https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Punteros
@@ -37,7 +46,7 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
     -https://www.aprenderaprogramar.pro/2017/10/arrays-bidimensionales.html
     -Matrices y punteros C++: https://ronnyml.wordpress.com/2009/07/04/vectores-matrices-y-punteros-en-c/
     -Problema con encontrar length: https://stackoverflow.com/questions/4108313/how-do-i-find-the-length-of-an-array
-
+    -Set precision: http://www.cplusplus.com/reference/iomanip/setprecision/
 
 # POSIBLES MEJORAS
 - Llamar "Asteroide" al objeto "Asteroides" dado que el plural puede dar lugar a confusión - Tener una clase que se llame Cuerpo que tenga campos(tipo, ejeX, ejeY, masa) 
