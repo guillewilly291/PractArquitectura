@@ -5,6 +5,7 @@
 
 using namespace std; // para evitar tener que poner std::cout cada vez que se quiera imprimir
 
+
 class asteroides
 {
   public:
