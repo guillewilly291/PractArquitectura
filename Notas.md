@@ -41,3 +41,31 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
 
 # POSIBLES MEJORAS
 - Llamar "Asteroide" al objeto "Asteroides" dado que el plural puede dar lugar a confusión - Tener una clase que se llame Cuerpo que tenga campos(tipo, ejeX, ejeY, masa) 
+
+
+
+# Codigo De Por si acaso 
+
+ /* Referente a los calculos de velocidad y aceleracion
+    for (int i = 0; i < tamano; i++)
+    {
+        sumatorio_Fx = 0.0;
+        sumatorio_Fy = 0.0;
+        for (int j = 0; j < tamano; j++)
+        {
+            sumatorio_Fx += matrizFuerzasX[i][j];
+            sumatorio_Fy += matrizFuerzasY[i][j];
+        }
+        accel_x = sumatorio_Fx / arrayAsteroides[i].masa; //calculamos la aceleración
+        accel_y = sumatorio_Fy / arrayAsteroides[i].masa;
+        velocidad_x = arrayAsteroides[i].vel_x + accel_x * Intervalotiempo; //* tiempo;  <------- hay que multiplicar por tiempo. De donde saco la varianle tiempo? //calculamos la velocidad
+        velocidad_y = arrayAsteroides[i].vel_y + accel_y * Intervalotiempo; //* tiempo;  <------- hay que multiplicar por tiempo. De donde saco la varianle tiempo?
+        posicion_x = arrayAsteroides[i].pos_x + velocidad_x * Intervalotiempo; //*tiempo //calculamos la nueva posicion
+        posicion_y = arrayAsteroides[i].pos_y + velocidad_y * Intervalotiempo; //*tiempo //calculamos la nueva posicion
+
+        arrayAsteroides[i].vel_x = velocidad_x; //refrescamos los datos de los objetos
+        arrayAsteroides[i].vel_y = velocidad_y;
+        arrayAsteroides[i].pos_x = posicion_x;
+        arrayAsteroides[i].pos_y = posicion_y;
+    }
+    */
