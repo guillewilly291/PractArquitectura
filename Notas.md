@@ -78,3 +78,64 @@ https://www.pccomponentes.com/samsung-960-evo-nvme-m2-ssd-pci-e-500gb
         arrayAsteroides[i].pos_y = posicion_y;
     }
     */
+
+
+
+    void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides, double **matrizFuerzas)
+{
+    cout << "---asteroids vs planets---" << endl;
+    cout << "Fuerzas Matriz  : " << endl;
+    for (int i = 0; i < num_asteroides + num_planetas; i++)
+    {
+
+        for (int j = 0; j < num_asteroides + num_planetas; j++)
+        {
+            cout << matrizFuerzas[i][j] << " ";
+        }
+        cout << "" << endl;
+    }
+
+    cout << "Fuerzas Matriz X  : " << endl;
+    for (int i = 0; i < num_asteroides + num_planetas; i++)
+    {
+
+        for (int j = 0; j < num_asteroides + num_planetas; j++)
+        {
+            cout << matrizFuerzasX[i][j] << " ";
+        }
+        cout << "" << endl;
+    }
+
+    cout << "Fuerzas Matriz Y : " << endl;
+    for (int i = 0; i < num_asteroides + num_planetas; i++)
+    {
+
+        for (int j = 0; j < num_asteroides + num_planetas; j++)
+        {
+            cout << matrizFuerzasY[i][j] << " ";
+        }
+        cout << "" << endl;
+    }
+    cout << "Asteroides con sus posiciones inicial: " << endl;
+    for (int i = 0; i < num_asteroides; i++)
+    {
+        cout << "  Asteroide " << i << ":";
+        cout << "  Posicion X: " << arrayAsteroides[i].pos_x;
+        cout << "  Posicion Y: " << arrayAsteroides[i].pos_y;
+        cout << "  Posicion Masa: " << arrayAsteroides[i].masa;
+        cout << "  Velocidad X: " << arrayAsteroides[i].vel_x;
+        cout << "  Velocidad Y " << arrayAsteroides[i].vel_y << endl;
+    }
+}
+
+cout << "  Asteroides con sus posiciones Finales" << endl;
+for (int i = 0; i < num_asteroides; i++)
+{
+
+    cout << "      Asteroide " << i << ":";
+    cout << "      Posicion X: " << arrayAsteroides[i].pos_x;
+    cout << "      Posicion Y: " << arrayAsteroides[i].pos_y;
+    cout << "      Posicion Masa: " << arrayAsteroides[i].masa;
+    cout << "      Velocidad X: " << arrayAsteroides[i].vel_x;
+    cout << "      Velocidad Y: " << arrayAsteroides[i].vel_y << endl;
+    }

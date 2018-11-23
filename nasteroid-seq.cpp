@@ -27,6 +27,8 @@ const double gravity = 6.674 * pow(10, -5);
 const double Intervalotiempo = 0.1;
 const double width = 200.0;
 const double height = 200.0;
+const double media = 1000;
+const double desviacion = 50;
 
 double calculateDistanceAlCuadrado(asteroides, asteroides);
 double calculateDistanceAlCuadrado(asteroides, planetas);
@@ -38,17 +40,18 @@ double calculateMovNormal(planetas cuerpo1, asteroides cuerpo2);
 double calculateMovNormal(asteroides cuerpo1, planetas cuerpo2);
 double calculateMovNormal(asteroides cuerpo1, asteroides cuerpo2);
 
-double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *, asteroides *);
-double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *, asteroides *);
+double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides, double **matrizFuerzas);
+double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides, double **matrizFuerzas);
+double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides);
 
 void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides);
 void calcularRebote(asteroides cuerpo);
-void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides);
+void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *);
 
-    int calcParameters(int seed);
+int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(width, std ::numeric_limits<double>::max())};
 uniform_real_distribution<double> ydist{0.0, std::nextafter(height, std ::numeric_limits<double>::max())};
-normal_distribution<double> mdist{1000, 50};
+normal_distribution<double> mdist{media, desviacion};
 
 int main(int argc, char const *argv[])
 {
@@ -61,10 +64,10 @@ int main(int argc, char const *argv[])
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
 */
-    num_asteroides = 2; //atoi es para pasar de string a numero
-    num_iteraciones = 1;
-    num_planetas = 1;
-    seed = 1;
+    num_asteroides = 20; //atoi es para pasar de string a numero
+    num_iteraciones = 50;
+    num_planetas = 40;
+    seed = 7;
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
 
@@ -138,71 +141,79 @@ int main(int argc, char const *argv[])
     }
     myfile.close();
 
+    double **matrizFuerzas;
+
     double **matrizFuerzasX;
 
     double **matrizFuerzasY;
 
-    matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
+    matrizFuerzas = tablaDeFuerzas(num_asteroides,num_planetas,arrayPlanetas,arrayAsteroides);
+    
+    matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
 
-    matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
+    matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
 
-    cout << "Fuerzas Matriz X: " << endl;
-    for (int i = 0; i < num_asteroides + num_planetas; i++)
-    {
+    imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides, matrizFuerzas,arrayPlanetas);
 
-        for (int j = 0; j < num_asteroides + num_planetas; j++)
-        {
-            cout << matrizFuerzasX[i][j] << " ";
-        }
-        cout << "" << endl;
-    }
-
-    cout << "Fuerzas Matriz Y: " << endl;
-    for (int i = 0; i < num_asteroides + num_planetas; i++)
-    {
-
-        for (int j = 0; j < num_asteroides + num_planetas; j++)
-        {
-            cout << matrizFuerzasY[i][j] << " ";
-        }
-        cout << "" << endl;
-    }
-
-    cout << "Asteroides con sus posiciones inicial: " << endl;
-    for (int i = 0; i < num_asteroides; i++)
-    {
-        cout << "  Asteroide " << i << ":";
-        cout << "  Posicion X: " << arrayAsteroides[i].pos_x;
-        cout << "  Posicion Y: " << arrayAsteroides[i].pos_y;
-        cout << "  Posicion Masa: " << arrayAsteroides[i].masa;
-        cout << "  Velocidad X: " << arrayAsteroides[i].vel_x;
-        cout << "  Velocidad Y " << arrayAsteroides[i].vel_y << endl;
-    }
-
-    for (int i = 0; i < num_iteraciones; i++)
+    for (int i = 1; i < num_iteraciones; i++)
     { //Bucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
         calculateVelocidad(num_asteroides,num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
-        matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
-        matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
-        imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
+        matrizFuerzas = tablaDeFuerzas(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
+        matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
+        matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
+        imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides,matrizFuerzas,arrayPlanetas); 
     }
 
-cout << "  Asteroides con sus posiciones Finales" << endl;
-for (int i = 0; i < num_asteroides; i++)
-{
 
-    cout << "      Asteroide " << i << ":";
-    cout << "      Posicion X: " << arrayAsteroides[i].pos_x;
-    cout << "      Posicion Y: " << arrayAsteroides[i].pos_y;
-    cout << "      Posicion Masa: " << arrayAsteroides[i].masa;
-    cout << "      Velocidad X: " << arrayAsteroides[i].vel_x;
-    cout << "      Velocidad Y " << arrayAsteroides[i].vel_y << endl;
-    }
 
     return 0;
 }
 
-double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides)
+double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides)
+{
+
+    int cuerposTotales = num_asteroides + num_planetas;
+    double **tablaFx;
+    tablaFx = new double *[cuerposTotales];
+    for (int i = 0; i < cuerposTotales; i++)
+    {
+        tablaFx[i] = new double[cuerposTotales];
+    }
+
+    for (int i = 0; i < cuerposTotales; i++)
+    {
+        tablaFx[i][i] = 0; //diagonal
+        for (int j = i + 1; j < cuerposTotales; j++)
+        {
+
+            if (i < num_asteroides && j < num_asteroides)
+            {
+                tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
+            }
+            else if (i < num_asteroides && j >= num_asteroides)
+            {
+                tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
+            }
+            else if (i >= num_asteroides && j < num_asteroides)
+            {
+                tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]);
+            }
+            else
+            {
+                tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]);
+            }
+
+            if (tablaFx[i][j] > 200)
+            {
+                tablaFx[i][j] = 200;
+            }
+            tablaFx[j][i] = -tablaFx[i][j]; //la fuerza que hace j sobre i es la inversa que la que ejerce i sobre j
+        }
+    }
+    return tablaFx;
+}
+
+double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides, double **matrizFuerzas)
 {
 
     int cuerposTotales = num_asteroides + num_planetas;
@@ -222,27 +233,23 @@ double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPl
 
             if (i < num_asteroides && j < num_asteroides)
             {
-                tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
                 double a = cos(calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]));
-                tablaFx[i][j] *= a;
+                tablaFx[i][j] = matrizFuerzas[i][j]*a;
             }
             else if (i < num_asteroides && j >= num_asteroides)
             {
-                tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
                 double a = cos(calculateMovNormal(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]));
-                tablaFx[i][j] *= a;
+                tablaFx[i][j] = matrizFuerzas[i][j] * a;
             }
             else if (i >= num_asteroides && j < num_asteroides)
             {
-                tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]);
                 double a = cos(calculateMovNormal(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]));
-                tablaFx[i][j] *= a;
+                tablaFx[i][j] = matrizFuerzas[i][j] * a;
             }
             else
             {
-                tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]);
                 double a = cos(calculateMovNormal(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]));
-                tablaFx[i][j] *= a;
+                tablaFx[i][j] = matrizFuerzas[i][j] * a;
             }
 
             if (tablaFx[i][j] > 200)
@@ -255,7 +262,7 @@ double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPl
     return tablaFx;
 }
 
-double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides)
+double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides, double **matrizFuerzas)
 {
 
     int cuerposTotales = num_asteroides + num_planetas;
@@ -273,30 +280,25 @@ double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPl
         for (int j = i + 1; j < cuerposTotales; j++)
         {
             if (i < num_asteroides && j < num_asteroides)
-            {
-                tablaFy[i][j] = (gravity * arrayAsteroides[i].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
+            { 
                 double a = sin(calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]));
-                tablaFy[i][j] *= a;
+                tablaFy[i][j] = matrizFuerzas[i][j] * a;
             }
             else if (i < num_asteroides && j >= num_asteroides)
             {
-                tablaFy[i][j] = (gravity * arrayAsteroides[i].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
                 double a = sin(calculateMovNormal(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]));
-                tablaFy[i][j] *= a;
+                tablaFy[i][j] = matrizFuerzas[i][j] * a;
             }
             else if (i >= num_asteroides && j < num_asteroides)
             {
-                tablaFy[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]);
                 double a = sin(calculateMovNormal(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]));
-                tablaFy[i][j] *= a;
+                tablaFy[i][j] = matrizFuerzas[i][j] * a;
             }
             else
             {
-                tablaFy[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]);
                 double a = sin(calculateMovNormal(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]));
-                tablaFy[i][j] *= a;
+                tablaFy[i][j] = matrizFuerzas[i][j] * a;
             }
-
             if (tablaFy[i][j] > 200)
             {
                 tablaFy[i][j] = 200;
@@ -470,37 +472,37 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
     }
     
 }
-void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzasX,double **matrizFuerzasY,asteroides *arrayAsteroides)
+void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzasX,double **matrizFuerzasY,asteroides *arrayAsteroides, double **matrizFuerzas,planetas *arrayPlanetas)
 {
-    cout << "Fuerzas Matriz X  : " << endl;
-    for (int i = 0; i < num_asteroides + num_planetas; i++)
-    {
-
-        for (int j = 0; j < num_asteroides + num_planetas; j++)
-        {
-            cout << matrizFuerzasX[i][j] << " ";
-        }
-        cout << "" << endl;
-    }
-
-    cout << "Fuerzas Matriz Y : " << endl;
-    for (int i = 0; i < num_asteroides + num_planetas; i++)
-    {
-
-        for (int j = 0; j < num_asteroides + num_planetas; j++)
-        {
-            cout << matrizFuerzasY[i][j] << " ";
-        }
-        cout << "" << endl;
-    }
-    cout << "Asteroides con sus posiciones inicial: " << endl;
+    cout<<"---asteroids vs asteroids---"<<endl;
+   
     for (int i = 0; i < num_asteroides; i++)
     {
-        cout << "  Asteroide " << i << ":";
-        cout << "  Posicion X: " << arrayAsteroides[i].pos_x;
-        cout << "  Posicion Y: " << arrayAsteroides[i].pos_y;
-        cout << "  Posicion Masa: " << arrayAsteroides[i].masa;
-        cout << "  Velocidad X: " << arrayAsteroides[i].vel_x;
-        cout << "  Velocidad Y " << arrayAsteroides[i].vel_y << endl;
+
+        for (int j = i+1; j < num_asteroides; j++)
+        {
+            if(i!=j){
+                cout << "Asteroide: "<<i << " Asteroide: " << j << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]);
+            }
+           
+        }
+        cout << "" << endl;
     }
+    cout << "---asteroids vs planets---" << endl;
+
+    for (int i = 0; i < num_asteroides; i++)
+    {
+
+        for (int j = i + 1; j < num_asteroides + num_planetas; j++)
+        {
+            if((i!=j) && (j>num_asteroides-1)){
+                cout << " Asteroide: " << i << " Planeta: " << j - num_asteroides << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
+            }
+            
+        }
+        cout << "" << endl;
+    }
+
+    cout<< "*********************ITERATION*********************"<<endl;
 }
+
