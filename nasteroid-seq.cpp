@@ -29,6 +29,7 @@ const double width = 200.0;
 const double height = 200.0;
 const double media = 1000;
 const double desviacion = 50;
+const string StepByStep = "step_by_step.txt";
 
 double calculateDistanceAlCuadrado(asteroides, asteroides);
 double calculateDistanceAlCuadrado(asteroides, planetas);
@@ -64,9 +65,9 @@ int main(int argc, char const *argv[])
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
 */
-    num_asteroides = 20; //atoi es para pasar de string a numero
-    num_iteraciones = 50;
-    num_planetas = 40;
+    num_asteroides = 2; //atoi es para pasar de string a numero
+    num_iteraciones = 2;
+    num_planetas = 2;
     seed = 7;
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
@@ -120,6 +121,7 @@ int main(int argc, char const *argv[])
     }
 
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
+    ofstream initFile(StepByStep);
 
     /*
      for (int i = 1; i < argc; i++)
@@ -139,7 +141,7 @@ int main(int argc, char const *argv[])
     {
         myfile << arrayPlanetas[i].pos_x << " " << arrayPlanetas[i].pos_y << " " << arrayPlanetas[i].masa << endl;
     }
-    myfile.close();
+    
 
     double **matrizFuerzas;
 
@@ -153,7 +155,7 @@ int main(int argc, char const *argv[])
 
     matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
 
-    imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides, matrizFuerzas,arrayPlanetas);
+    imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides, matrizFuerzas, arrayPlanetas);
 
     for (int i = 1; i < num_iteraciones; i++)
     { //Bucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
@@ -161,10 +163,21 @@ int main(int argc, char const *argv[])
         matrizFuerzas = tablaDeFuerzas(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
         matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
         matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
-        imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides,matrizFuerzas,arrayPlanetas); 
+        imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides, matrizFuerzas, arrayPlanetas);
     }
 
+    ofstream outFile("out.txt");
+    
+    for (int i = 0; i < num_asteroides; i++)
+    {
 
+        outFile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " "<< arrayAsteroides[i].vel_x << " "<< arrayAsteroides[i].vel_y << " " << arrayAsteroides[i].masa << endl;
+
+    }
+    outFile << endl;
+    myfile.close();
+    outFile.close();
+    initFile.close();
 
     return 0;
 }
@@ -474,21 +487,26 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
 }
 void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzasX,double **matrizFuerzasY,asteroides *arrayAsteroides, double **matrizFuerzas,planetas *arrayPlanetas)
 {
-    cout<<"---asteroids vs asteroids---"<<endl;
-   
+
+    ofstream initFile;
+
+    initFile.open(StepByStep, ios::app); // App significará que solo pondremos el texto al final del .txt 
+
+    initFile<< "---asteroids vs asteroids---" << endl;
+
     for (int i = 0; i < num_asteroides; i++)
     {
 
         for (int j = i+1; j < num_asteroides; j++)
         {
             if(i!=j){
-                cout << "Asteroide: "<<i << " Asteroide: " << j << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]);
+                initFile << "Asteroide: "<<i << " Asteroide: " << j << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]) <<endl;
             }
            
         }
-        cout << "" << endl;
+        initFile << "" << endl;
     }
-    cout << "---asteroids vs planets---" << endl;
+    initFile << "---asteroids vs planets---" << endl;
 
     for (int i = 0; i < num_asteroides; i++)
     {
@@ -496,13 +514,14 @@ void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzas
         for (int j = i + 1; j < num_asteroides + num_planetas; j++)
         {
             if((i!=j) && (j>num_asteroides-1)){
-                cout << " Asteroide: " << i << " Planeta: " << j - num_asteroides << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
+                initFile << " Asteroide: " << i << " Planeta: " << j - num_asteroides << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]) << endl;
             }
             
         }
-        cout << "" << endl;
+        initFile << "" << endl;
     }
 
-    cout<< "*********************ITERATION*********************"<<endl;
+    initFile << "*********************ITERATION*********************" << endl;
+    initFile.close();
 }
 
