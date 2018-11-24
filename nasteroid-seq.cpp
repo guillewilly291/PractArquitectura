@@ -65,9 +65,9 @@ int main(int argc, char const *argv[])
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
 */
-    num_asteroides = 2; //atoi es para pasar de string a numero
+    num_asteroides = 3; //atoi es para pasar de string a numero
     num_iteraciones = 2;
-    num_planetas = 2;
+    num_planetas = 3;
     seed = 7;
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
@@ -121,7 +121,7 @@ int main(int argc, char const *argv[])
     }
 
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
-    ofstream initFile(StepByStep);
+   
 
     /*
      for (int i = 1; i < argc; i++)
@@ -155,7 +155,7 @@ int main(int argc, char const *argv[])
 
     matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
 
-    imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides, matrizFuerzas, arrayPlanetas);
+    
 
     for (int i = 1; i < num_iteraciones; i++)
     { //Bucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
@@ -163,7 +163,7 @@ int main(int argc, char const *argv[])
         matrizFuerzas = tablaDeFuerzas(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
         matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
         matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
-        imprimirMatrices(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides, matrizFuerzas, arrayPlanetas);
+       
     }
 
     ofstream outFile("out.txt");
@@ -177,7 +177,7 @@ int main(int argc, char const *argv[])
     outFile << endl;
     myfile.close();
     outFile.close();
-    initFile.close();
+   
 
     return 0;
 }
@@ -504,10 +504,21 @@ void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzas
             }
            
         }
-        initFile << "" << endl;
+       
     }
+    initFile << "" << endl;
     initFile << "---asteroids vs planets---" << endl;
 
+    cout << "Fuerzas Matriz  : " << endl;
+    for (int i = 0; i < num_asteroides + num_planetas; i++)
+    {
+
+        for (int j = 0; j < num_asteroides + num_planetas; j++)
+        {
+            cout << matrizFuerzas[i][j] << " ";
+        }
+        cout << "" << endl;
+    }
     for (int i = 0; i < num_asteroides; i++)
     {
 
@@ -518,10 +529,11 @@ void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzas
             }
             
         }
-        initFile << "" << endl;
+       
     }
+    initFile << "" << endl;
 
-    initFile << "*********************ITERATION*********************" << endl;
+    initFile << "*********************ITERATION*********************" << endl ;
     initFile.close();
 }
 
