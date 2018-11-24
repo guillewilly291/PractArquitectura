@@ -413,10 +413,7 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
     double accel_y = 0.0;
     double sumatorio_Fx = 0.0;
     double sumatorio_Fy = 0.0;
-    double velocidad_x = 0.0;
-    double velocidad_y = 0.0;
-    double posicion_x = 0.0;
-    double posicion_y = 0.0;
+   
 
     for (int i = 0; i < num_asteroides; i++)//solo se aplica la fuerza a los asteroides
     {
