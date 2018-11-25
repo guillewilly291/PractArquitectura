@@ -67,15 +67,9 @@ int main(int argc, char const *argv[])
     seed  = atoi(argv[4]);
 */
     num_asteroides = 3; //atoi es para pasar de string a numero
-<<<<<<< HEAD
-    num_iteraciones = 2;
-    num_planetas = 3;
-    seed = 7;
-=======
     num_iteraciones = 3;
     num_planetas = 3;
     seed = 3;
->>>>>>> 9335cd31f877a1a4af27710acecdf9d4a4e4a7e5
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
 
