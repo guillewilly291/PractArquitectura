@@ -3,6 +3,7 @@
 #include <iostream> //basica
 #include <random>   //numeros aleatorios
 #include <math.h>
+#include <iomanip> //setPrecis
 
 using namespace std; // para evitar tener que poner std::cout cada vez que se quiera imprimir
 
@@ -45,7 +46,7 @@ double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPl
 double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides, double **matrizFuerzas);
 double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPlanetas, asteroides *arrayAsteroides);
 
-void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides);
+void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides);
 void calcularRebote(asteroides cuerpo);
 void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *);
 
@@ -65,10 +66,10 @@ int main(int argc, char const *argv[])
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
 */
-    num_asteroides = 2; //atoi es para pasar de string a numero
-    num_iteraciones = 2;
-    num_planetas = 2;
-    seed = 7;
+    num_asteroides = 3; //atoi es para pasar de string a numero
+    num_iteraciones = 3;
+    num_planetas = 3;
+    seed = 3;
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
 
@@ -134,14 +135,13 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < num_asteroides; i++)
     {
-        myfile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].masa << endl;
+        myfile << fixed << std::setprecision(3) << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].masa << endl;
     }
 
     for (int i = 0; i < num_planetas; i++)
     {
-        myfile << arrayPlanetas[i].pos_x << " " << arrayPlanetas[i].pos_y << " " << arrayPlanetas[i].masa << endl;
+        myfile <<fixed << std::setprecision(3) << arrayPlanetas[i].pos_x << " " << arrayPlanetas[i].pos_y << " " << arrayPlanetas[i].masa << endl;
     }
-    
 
     double **matrizFuerzas;
 
@@ -149,8 +149,8 @@ int main(int argc, char const *argv[])
 
     double **matrizFuerzasY;
 
-    matrizFuerzas = tablaDeFuerzas(num_asteroides,num_planetas,arrayPlanetas,arrayAsteroides);
-    
+    matrizFuerzas = tablaDeFuerzas(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
+
     matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
 
     matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
@@ -159,7 +159,7 @@ int main(int argc, char const *argv[])
 
     for (int i = 1; i < num_iteraciones; i++)
     { //Bucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
-        calculateVelocidad(num_asteroides,num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
+        calculateVelocidad(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
         matrizFuerzas = tablaDeFuerzas(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides);
         matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
         matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
@@ -167,12 +167,11 @@ int main(int argc, char const *argv[])
     }
 
     ofstream outFile("out.txt");
-    
+
     for (int i = 0; i < num_asteroides; i++)
     {
 
-        outFile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " "<< arrayAsteroides[i].vel_x << " "<< arrayAsteroides[i].vel_y << " " << arrayAsteroides[i].masa << endl;
-
+        outFile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].vel_x << " " << arrayAsteroides[i].vel_y << " " << arrayAsteroides[i].masa << endl;
     }
     outFile << endl;
     myfile.close();
@@ -247,7 +246,7 @@ double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPl
             if (i < num_asteroides && j < num_asteroides)
             {
                 double a = cos(calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]));
-                tablaFx[i][j] = matrizFuerzas[i][j]*a;
+                tablaFx[i][j] = matrizFuerzas[i][j] * a;
             }
             else if (i < num_asteroides && j >= num_asteroides)
             {
@@ -293,7 +292,7 @@ double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPl
         for (int j = i + 1; j < cuerposTotales; j++)
         {
             if (i < num_asteroides && j < num_asteroides)
-            { 
+            {
                 double a = sin(calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]));
                 tablaFy[i][j] = matrizFuerzas[i][j] * a;
             }
@@ -406,9 +405,9 @@ double calculateMovNormal(planetas cuerpo1, planetas cuerpo2)
     return angulo;
 }
 
-void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides)
+void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides)
 {
-    int size = num_asteroides+num_planetas;
+    int size = num_asteroides + num_planetas;
     double accel_x = 0.0;
     double accel_y = 0.0;
     double sumatorio_Fx = 0.0;
@@ -418,12 +417,12 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
     double posicion_x = 0.0;
     double posicion_y = 0.0;
 
-    for (int i = 0; i < num_asteroides; i++)//solo se aplica la fuerza a los asteroides
+    for (int i = 0; i < num_asteroides; i++) //solo se aplica la fuerza a los asteroides
     {
         sumatorio_Fx = 0.0;
         sumatorio_Fy = 0.0;
-        for (int j = 0; j < size; j++)//tenemos que recorrer todas las columnas(tanto asteroides como planetas)
-        { 
+        for (int j = 0; j < size; j++) //tenemos que recorrer todas las columnas(tanto asteroides como planetas)
+        {
 
             sumatorio_Fx += matrizFuerzasX[i][j];
             sumatorio_Fy += matrizFuerzasY[i][j];
@@ -437,7 +436,7 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
         arrayAsteroides[i].pos_x += (arrayAsteroides[i].vel_x * Intervalotiempo);
         arrayAsteroides[i].pos_y += (arrayAsteroides[i].vel_y * Intervalotiempo);
 
-//Calculamos los rebotes con las paredes        
+        //Calculamos los rebotes con las paredes
         if (arrayAsteroides[i].pos_x <= 0)
         {                                                         //si el cuerpo se sale por la izquierda
             arrayAsteroides[i].pos_x = 2;                         //posicionamos en x=2
@@ -445,7 +444,7 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
         }
         if (arrayAsteroides[i].pos_x >= width)
         {                                                         //si el cuerpo se sale por la derecha
-            arrayAsteroides[i].pos_x = width-2;                       //posicionamos en x=198
+            arrayAsteroides[i].pos_x = width - 2;                 //posicionamos en x=198
             arrayAsteroides[i].vel_x = -arrayAsteroides[i].vel_x; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_y <= 0)
@@ -455,12 +454,11 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
         }
         if (arrayAsteroides[i].pos_y >= height)
         {                                                         //si el cuerpo se sale por abajo
-            arrayAsteroides[i].pos_y = height-2;                       //posicionamos en y=198
+            arrayAsteroides[i].pos_y = height - 2;                //posicionamos en y=198
             arrayAsteroides[i].vel_y = -arrayAsteroides[i].vel_y; //cambiamos el sentido de la velocidad
         }
-    
     }
-//CALCULAMOS LOS REBOTES ENTRE ASTEROIDES
+    //CALCULAMOS LOS REBOTES ENTRE ASTEROIDES
     for (int i = 0; i < num_asteroides; i++)
     {
         sumatorio_Fx = 0.0;
@@ -483,26 +481,25 @@ void calculateVelocidad(int num_asteroides,int num_planetas, double **matrizFuer
             }
         }
     }
-    
 }
-void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzasX,double **matrizFuerzasY,asteroides *arrayAsteroides, double **matrizFuerzas,planetas *arrayPlanetas)
+void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *arrayPlanetas)
 {
 
     ofstream initFile;
 
-    initFile.open(StepByStep, ios::app); // App significará que solo pondremos el texto al final del .txt 
+    initFile.open(StepByStep, ios::app); // App significará que solo pondremos el texto al final del .txt
 
-    initFile<< "---asteroids vs asteroids---" << endl;
+    initFile << "---asteroids vs asteroids---" << endl;
 
     for (int i = 0; i < num_asteroides; i++)
     {
 
-        for (int j = i+1; j < num_asteroides; j++)
+        for (int j = i + 1; j < num_asteroides; j++)
         {
-            if(i!=j){
-                initFile << "Asteroide: "<<i << " Asteroide: " << j << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]) <<endl;
+            if (i != j)
+            {
+                initFile << "Asteroide: " << i << " Asteroide: " << j << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayAsteroides[j]) << endl;
             }
-           
         }
         initFile << "" << endl;
     }
@@ -513,10 +510,10 @@ void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzas
 
         for (int j = i + 1; j < num_asteroides + num_planetas; j++)
         {
-            if((i!=j) && (j>num_asteroides-1)){
+            if ((i != j) && (j > num_asteroides - 1))
+            {
                 initFile << " Asteroide: " << i << " Planeta: " << j - num_asteroides << " Valor de la Fuerza: " << matrizFuerzas[i][j] << " Angulo entre ambos: " << calculateMovNormal(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]) << endl;
             }
-            
         }
         initFile << "" << endl;
     }
@@ -524,4 +521,3 @@ void imprimirMatrices(int num_asteroides,int num_planetas,double **matrizFuerzas
     initFile << "*********************ITERATION*********************" << endl;
     initFile.close();
 }
-

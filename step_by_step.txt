@@ -1,24 +1,63 @@
 ---asteroids vs asteroids---
-Asteroide: 0 Asteroide: 1 Valor de la Fuerza: 0.00563302 Angulo entre ambos: -0.124902
+Asteroide: 0 Asteroide: 1 Valor de la Fuerza: 0.00822805 Angulo entre ambos: 0.418865
+Asteroide: 0 Asteroide: 2 Valor de la Fuerza: 0.0129665 Angulo entre ambos: -0.632359
+
+Asteroide: 1 Asteroide: 2 Valor de la Fuerza: 0.00349638 Angulo entre ambos: -0.0440223
 
 
 ---asteroids vs planets---
- Asteroide: 0 Planeta: 0 Valor de la Fuerza: 0.0210188 Angulo entre ambos: -0.0341473
- Asteroide: 0 Planeta: 1 Valor de la Fuerza: 0.0727352 Angulo entre ambos: 0.435198
+ Asteroide: 0 Planeta: 0 Valor de la Fuerza: 0.0718712 Angulo entre ambos: 0.604147
+ Asteroide: 0 Planeta: 1 Valor de la Fuerza: 0.105018 Angulo entre ambos: 0.447847
+ Asteroide: 0 Planeta: 2 Valor de la Fuerza: 0.0234128 Angulo entre ambos: 0.756788
 
- Asteroide: 1 Planeta: 0 Valor de la Fuerza: 0.0370561 Angulo entre ambos: 0.627723
- Asteroide: 1 Planeta: 1 Valor de la Fuerza: 0.0413436 Angulo entre ambos: 0.450763
+ Asteroide: 1 Planeta: 0 Valor de la Fuerza: 0.0197326 Angulo entre ambos: 0.514638
+ Asteroide: 1 Planeta: 1 Valor de la Fuerza: 0.0282574 Angulo entre ambos: 0.0786121
+ Asteroide: 1 Planeta: 2 Valor de la Fuerza: 0.0870479 Angulo entre ambos: 0.77913
+
+ Asteroide: 2 Planeta: 0 Valor de la Fuerza: 0.0696859 Angulo entre ambos: 0.598075
+ Asteroide: 2 Planeta: 1 Valor de la Fuerza: 0.0439015 Angulo entre ambos: -0.217771
+ Asteroide: 2 Planeta: 2 Valor de la Fuerza: 0.0181082 Angulo entre ambos: 0.380542
 
 *********************ITERATION*********************
 ---asteroids vs asteroids---
-Asteroide: 0 Asteroide: 1 Valor de la Fuerza: 0.00563302 Angulo entre ambos: -0.124902
+Asteroide: 0 Asteroide: 1 Valor de la Fuerza: 0.00822805 Angulo entre ambos: 0.418865
+Asteroide: 0 Asteroide: 2 Valor de la Fuerza: 0.0129665 Angulo entre ambos: -0.632359
+
+Asteroide: 1 Asteroide: 2 Valor de la Fuerza: 0.00349638 Angulo entre ambos: -0.0440223
 
 
 ---asteroids vs planets---
- Asteroide: 0 Planeta: 0 Valor de la Fuerza: 0.0210188 Angulo entre ambos: -0.0341473
- Asteroide: 0 Planeta: 1 Valor de la Fuerza: 0.0727352 Angulo entre ambos: 0.435198
+ Asteroide: 0 Planeta: 0 Valor de la Fuerza: 0.0718712 Angulo entre ambos: 0.604147
+ Asteroide: 0 Planeta: 1 Valor de la Fuerza: 0.105018 Angulo entre ambos: 0.447846
+ Asteroide: 0 Planeta: 2 Valor de la Fuerza: 0.0234128 Angulo entre ambos: 0.756788
 
- Asteroide: 1 Planeta: 0 Valor de la Fuerza: 0.0370561 Angulo entre ambos: 0.627723
- Asteroide: 1 Planeta: 1 Valor de la Fuerza: 0.0413435 Angulo entre ambos: 0.450762
+ Asteroide: 1 Planeta: 0 Valor de la Fuerza: 0.0197326 Angulo entre ambos: 0.514638
+ Asteroide: 1 Planeta: 1 Valor de la Fuerza: 0.0282574 Angulo entre ambos: 0.0786121
+ Asteroide: 1 Planeta: 2 Valor de la Fuerza: 0.0870479 Angulo entre ambos: 0.77913
+
+ Asteroide: 2 Planeta: 0 Valor de la Fuerza: 0.0696859 Angulo entre ambos: 0.598075
+ Asteroide: 2 Planeta: 1 Valor de la Fuerza: 0.0439015 Angulo entre ambos: -0.217771
+ Asteroide: 2 Planeta: 2 Valor de la Fuerza: 0.0181082 Angulo entre ambos: 0.380542
+
+*********************ITERATION*********************
+---asteroids vs asteroids---
+Asteroide: 0 Asteroide: 1 Valor de la Fuerza: 0.00822805 Angulo entre ambos: 0.418865
+Asteroide: 0 Asteroide: 2 Valor de la Fuerza: 0.0129665 Angulo entre ambos: -0.632359
+
+Asteroide: 1 Asteroide: 2 Valor de la Fuerza: 0.00349638 Angulo entre ambos: -0.0440223
+
+
+---asteroids vs planets---
+ Asteroide: 0 Planeta: 0 Valor de la Fuerza: 0.0718712 Angulo entre ambos: 0.604147
+ Asteroide: 0 Planeta: 1 Valor de la Fuerza: 0.105018 Angulo entre ambos: 0.447846
+ Asteroide: 0 Planeta: 2 Valor de la Fuerza: 0.0234128 Angulo entre ambos: 0.756788
+
+ Asteroide: 1 Planeta: 0 Valor de la Fuerza: 0.0197326 Angulo entre ambos: 0.514638
+ Asteroide: 1 Planeta: 1 Valor de la Fuerza: 0.0282574 Angulo entre ambos: 0.0786121
+ Asteroide: 1 Planeta: 2 Valor de la Fuerza: 0.0870479 Angulo entre ambos: 0.77913
+
+ Asteroide: 2 Planeta: 0 Valor de la Fuerza: 0.0696859 Angulo entre ambos: 0.598075
+ Asteroide: 2 Planeta: 1 Valor de la Fuerza: 0.0439015 Angulo entre ambos: -0.217771
+ Asteroide: 2 Planeta: 2 Valor de la Fuerza: 0.0181082 Angulo entre ambos: 0.380542
 
 *********************ITERATION*********************
