@@ -19,6 +19,7 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
 -Hay que poner el calculateMovNormal solo cuando la distancioa sea de 2 o mayor
 -en el movimiento normal, si la distancia es mayor a 2 no se debe calcular(?¿?fin de la ejecucion? devuelve 0?¿?¿)
 
+
 # Mapa
 
 (0, 0)-- -------(200, 0)  

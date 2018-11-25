@@ -4,6 +4,7 @@
 #include <random>   //numeros aleatorios
 #include <math.h>
 #include <iomanip> //setPrecis
+#include <omp.h>//Libreria OpenMP
 
 using namespace std; // para evitar tener que poner std::cout cada vez que se quiera imprimir
 
@@ -23,7 +24,7 @@ class planetas
     double pos_y;
     double masa;
 };
-
+int contador = 0;
 const double gravity = 6.674 * pow(10, -5);
 const double Intervalotiempo = 0.1;
 const double width = 200.0;
@@ -48,7 +49,7 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
 
 void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides);
 void calcularRebote(asteroides cuerpo);
-void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *);
+void imprimirMatrices(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *, int i);
 
 int calcParameters(int seed);
 uniform_real_distribution<double> xdist{0.0, std::nextafter(width, std ::numeric_limits<double>::max())};
@@ -66,9 +67,9 @@ int main(int argc, char const *argv[])
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
 */
-    num_asteroides = 3; //atoi es para pasar de string a numero
-    num_iteraciones = 3;
-    num_planetas = 3;
+    num_asteroides = 2000; //atoi es para pasar de string a numero
+    num_iteraciones = 200;
+    num_planetas = 1;
     seed = 3;
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
@@ -156,7 +157,6 @@ int main(int argc, char const *argv[])
     matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
 
     
-
     for (int i = 1; i < num_iteraciones; i++)
     { //Bucle que realiza las X iteraciones cambiando las fuerzas y las posiciones de los asteroides.
         calculateVelocidad(num_asteroides, num_planetas, matrizFuerzasX, matrizFuerzasY, arrayAsteroides);
@@ -164,6 +164,7 @@ int main(int argc, char const *argv[])
         matrizFuerzasX = tablaDeFuerzasX(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
         matrizFuerzasY = tablaDeFuerzasY(num_asteroides, num_planetas, arrayPlanetas, arrayAsteroides, matrizFuerzas);
        
+        imprimirMatrices(num_asteroides,  num_planetas,  arrayAsteroides,  matrizFuerzas,  arrayPlanetas,i);
     }
 
     ofstream outFile("out.txt");
@@ -171,7 +172,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < num_asteroides; i++)
     {
 
-        outFile << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].vel_x << " " << arrayAsteroides[i].vel_y << " " << arrayAsteroides[i].masa << endl;
+        outFile << fixed << std::setprecision(3) << arrayAsteroides[i].pos_x << " " << arrayAsteroides[i].pos_y << " " << arrayAsteroides[i].vel_x << " " << arrayAsteroides[i].vel_y << " " << arrayAsteroides[i].masa << endl;
     }
     outFile << endl;
     myfile.close();
@@ -186,6 +187,7 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
 
     int cuerposTotales = num_asteroides + num_planetas;
     double **tablaFx;
+    double distancia;
     tablaFx = new double *[cuerposTotales];
     for (int i = 0; i < cuerposTotales; i++)
     {
@@ -200,19 +202,42 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
 
             if (i < num_asteroides && j < num_asteroides)
             {
-                tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
+                distancia = calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
+                if (distancia<= 2) {
+                    tablaFx[i][j] = 0;
+                }else{
+                    tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayAsteroides[j].masa) / distancia;
+                }
+                
             }
             else if (i < num_asteroides && j >= num_asteroides)
             {
-                tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
+                distancia = calculateDistanceAlCuadrado(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
+                if(distancia<=2){//si la distancia es menor que 2, hay rebote por lo que la fuerza de atraccion es 0
+                    tablaFx[i][j] = 0;
+                }else{
+                    tablaFx[i][j] = (gravity * arrayAsteroides[i].masa * arrayPlanetas[j - num_asteroides].masa) / distancia ;
+                }
             }
             else if (i >= num_asteroides && j < num_asteroides)
             {
-                tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayAsteroides[j].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]);
+                distancia = calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]);
+                if(distancia <= 2){
+                    tablaFx[i][j] = 0;
+                }else{
+                    tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayAsteroides[j].masa) / distancia;
+                }
+                
             }
             else
             {
-                tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayPlanetas[j - num_asteroides].masa) / calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]);
+                distancia = calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]);
+                if(distancia <=2){
+                    tablaFx[i][j] = 0;
+                }else{
+                     tablaFx[i][j] = (gravity * arrayPlanetas[i - num_asteroides].masa * arrayPlanetas[j - num_asteroides].masa) / distancia;
+                }
+               
             }
 
             if (tablaFx[i][j] > 200)
@@ -435,26 +460,31 @@ void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFue
 
         //Calculamos los rebotes con las paredes
         if (arrayAsteroides[i].pos_x <= 0)
-        {                                                         //si el cuerpo se sale por la izquierda
+        {
+            cout << "REBOTE X = 0  " << contador << " : " << i << endl; //si el cuerpo se sale por la izquierda
             arrayAsteroides[i].pos_x = 2;                         //posicionamos en x=2
             arrayAsteroides[i].vel_x = -arrayAsteroides[i].vel_x; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_x >= width)
         {                                                         //si el cuerpo se sale por la derecha
+            cout << "REBOTE X=200  " << contador << " : " << i << endl;
             arrayAsteroides[i].pos_x = width - 2;                 //posicionamos en x=198
             arrayAsteroides[i].vel_x = -arrayAsteroides[i].vel_x; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_y <= 0)
         {                                                         //si el cuerpo se sale por abajo
+            cout << "REBOTE Y=0  " << contador << " : " << i <<  endl;
             arrayAsteroides[i].pos_y = 2;                         //posicionamos en y=2
             arrayAsteroides[i].vel_y = -arrayAsteroides[i].vel_y; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_y >= height)
         {                                                         //si el cuerpo se sale por abajo
+            cout << "REBOTE Y=200  " << contador << " : " << i << endl;
             arrayAsteroides[i].pos_y = height - 2;                //posicionamos en y=198
             arrayAsteroides[i].vel_y = -arrayAsteroides[i].vel_y; //cambiamos el sentido de la velocidad
         }
     }
+    
     //CALCULAMOS LOS REBOTES ENTRE ASTEROIDES
     for (int i = 0; i < num_asteroides; i++)
     {
@@ -466,6 +496,7 @@ void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFue
             double raiz = sqrt(distCuadrado);
             if (raiz <= 2 && (i != j))
             {
+                cout << "REBOTE  " << contador << " : "<< i << " con j: " << j <<endl; 
                 double vel1x, vel1y, vel2x, vel2y;
                 vel1x = arrayAsteroides[i].vel_x;
                 vel2x = arrayAsteroides[j].vel_x;
@@ -475,18 +506,20 @@ void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFue
                 arrayAsteroides[i].vel_y = vel2y;
                 arrayAsteroides[j].vel_x = vel1x;
                 arrayAsteroides[j].vel_y = vel1y;
+                contador++;                
             }
         }
     }
 }
 
-void imprimirMatrices(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *arrayPlanetas)
+void imprimirMatrices(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *arrayPlanetas,int i)
 {
 
     ofstream initFile;
 
     initFile.open(StepByStep, ios::app); // App significará que solo pondremos el texto al final del .txt
 
+    initFile << "Iteración: " << i << endl;
     initFile << "---asteroids vs asteroids---" << endl;
 
     for (int i = 0; i < num_asteroides; i++)
@@ -504,16 +537,6 @@ void imprimirMatrices(int num_asteroides, int num_planetas, asteroides *arrayAst
     initFile << "" << endl;
     initFile << "---asteroids vs planets---" << endl;
 
-    cout << "Fuerzas Matriz  : " << endl;
-    for (int i = 0; i < num_asteroides + num_planetas; i++)
-    {
-
-        for (int j = 0; j < num_asteroides + num_planetas; j++)
-        {
-            cout << matrizFuerzas[i][j] << " ";
-        }
-        cout << "" << endl;
-    }
     for (int i = 0; i < num_asteroides; i++)
     {
 
