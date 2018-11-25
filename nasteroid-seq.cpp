@@ -479,7 +479,8 @@ void calculateVelocidad(int num_asteroides, int num_planetas, double **matrizFue
         }
     }
 }
-void imprimirMatrices(int num_asteroides, int num_planetas, double **matrizFuerzasX, double **matrizFuerzasY, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *arrayPlanetas)
+
+void imprimirMatrices(int num_asteroides, int num_planetas, asteroides *arrayAsteroides, double **matrizFuerzas, planetas *arrayPlanetas)
 {
 
     ofstream initFile;
