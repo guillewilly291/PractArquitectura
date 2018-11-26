@@ -32,6 +32,7 @@ const double height = 200.0;
 const double media = 1000;
 const double desviacion = 50;
 const string StepByStep = "step_by_step.txt";
+const double distMinima = 2.0; 
 
 double calculateDistanceAlCuadrado(asteroides, asteroides);
 double calculateDistanceAlCuadrado(asteroides, planetas);
@@ -70,10 +71,10 @@ int main(int argc, char const *argv[])
     num_planetas  = atoi(argv[3]);
     seed  = atoi(argv[4]);
 */
-    num_asteroides = 500; //atoi es para pasar de string a numero
-    num_iteraciones = 200;
-    num_planetas = 500;
-    seed = 3;
+    num_asteroides = 1000 ; //atoi es para pasar de string a numero
+    num_iteraciones = 20;
+    num_planetas = 1;
+    seed = 1;
     argc = 5;
     default_random_engine re{seed}; // inicializamos el generador
 
@@ -204,7 +205,7 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
             {
                 distanciaCuadrado = calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
                 distancia = sqrt(distanciaCuadrado);
-                if (distancia <= 2)
+                if (distancia <= distMinima)
                 {
                     tablaFx[i][j] = 0;
                 }
@@ -217,7 +218,7 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
             {
                 distanciaCuadrado = calculateDistanceAlCuadrado(arrayAsteroides[i], arrayPlanetas[j - num_asteroides]);
                 distancia = sqrt(distanciaCuadrado);
-                if (distancia <= 2)
+                if (distancia <= distMinima)
                 { //si la distancia es menor que 2, hay rebote por lo que la fuerza de atraccion es 0
                     tablaFx[i][j] = 0;
                 }
@@ -230,7 +231,7 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
             {
                 distanciaCuadrado = calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayAsteroides[j]);
                 distancia = sqrt(distanciaCuadrado);
-                if (distancia <= 2)
+                if (distancia <= distMinima)
                 {
                     tablaFx[i][j] = 0;
                 }
@@ -243,7 +244,7 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
             {
                 distanciaCuadrado = calculateDistanceAlCuadrado(arrayPlanetas[i - num_asteroides], arrayPlanetas[j - num_asteroides]);
                 distancia = sqrt(distanciaCuadrado);
-                if (distancia <= 2)
+                if (distancia <= distMinima)
                 {
                     tablaFx[i][j] = 0;
                 }
@@ -524,7 +525,7 @@ void calcularRebotesAsteroides(asteroides *arrayAsteroides, int num_asteroides)
             double raiz = sqrt(distCuadrado);
             if (raiz <= 2 && (i != j))
             {
-
+                
                 double vel1x, vel1y, vel2x, vel2y;
                 vel1x = arrayAsteroides[i].vel_x;
                 vel2x = arrayAsteroides[j].vel_x;
@@ -534,6 +535,7 @@ void calcularRebotesAsteroides(asteroides *arrayAsteroides, int num_asteroides)
                 arrayAsteroides[i].vel_y = vel2y;
                 arrayAsteroides[j].vel_x = vel1x;
                 arrayAsteroides[j].vel_y = vel1y;
+                break;
             }
         }
     }
