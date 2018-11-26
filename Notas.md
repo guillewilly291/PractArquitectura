@@ -27,7 +27,7 @@ XXXX-Intentar pasar los parametros del programa mediante la consola y no mediant
 |                   |
 (0, 200)-- ----(200, 200)
 
-https://www.pccomponentes.com/samsung-960-evo-nvme-m2-ssd-pci-e-500gb
+
 
 # Ejecutar
 
@@ -55,6 +55,14 @@ https://www.pccomponentes.com/samsung-960-evo-nvme-m2-ssd-pci-e-500gb
 
 
 # Codigo De Por si acaso 
+
+
+
+ if ((((vel1x > 0) && (vel2x < 0)) || ((vel1y < 0) && (vel2y > 0)) || ((vel1x < 0) && (vel2x > 0)) || ((vel1y > 0) && (vel2y < 0)))){
+
+
+
+
 
  /* Referente a los calculos de velocidad y aceleracion
     for (int i = 0; i < tamano; i++)

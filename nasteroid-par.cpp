@@ -4,10 +4,13 @@
 #include <random>   //numeros aleatorios
 #include <math.h>
 #include <iomanip> //setPrecis
-#include <chrono> //Utilizado para el calculo de tiempos
+#include <chrono>  //Utilizado para el calculo de tiempos
+#include <omp.h>
+
 
 using namespace std; // para evitar tener que poner std::cout cada vez que se quiera imprimir
 using namespace std::chrono;
+
 
 class asteroides
 {
@@ -33,7 +36,7 @@ const double height = 200.0;
 const double media = 1000;
 const double desviacion = 50;
 const string StepByStep = "step_by_step.txt";
-const double distMinima = 2.0; 
+const double distMinima = 2.0;
 
 double calculateDistanceAlCuadrado(asteroides, asteroides);
 double calculateDistanceAlCuadrado(asteroides, planetas);
@@ -63,16 +66,16 @@ normal_distribution<double> mdist{media, desviacion};
 
 int main(int argc, char const *argv[])
 {
-   
+
     using clk = chrono::high_resolution_clock;
     auto t1 = clk::now();
     int num_asteroides, num_iteraciones, num_planetas, seed;
 
     /* Para ejecutar el programa como es debido se añade esto y se elimina lo de abajo, si seguimos para poder probar y tal usamos de momento lo dee abajo */
-     num_asteroides = atoi(argv[1]);//atoi es para pasar de string a numero
-    num_iteraciones =atoi(argv[2]);
-    num_planetas  = atoi(argv[3]);
-    seed  = atoi(argv[4]);
+    num_asteroides = atoi(argv[1]); //atoi es para pasar de string a numero
+    num_iteraciones = atoi(argv[2]);
+    num_planetas = atoi(argv[3]);
+    seed = atoi(argv[4]);
 
     /*  num_asteroides = 2; //atoi es para pasar de string a numero
     num_iteraciones = 62428;
@@ -94,6 +97,7 @@ int main(int argc, char const *argv[])
 
     asteroides *arrayAsteroides = (asteroides *)malloc(num_asteroides * sizeof(asteroides)); //reservamos la memoria necesaria para cada array( que será igual a lo que ocuppa un
     planetas *arrayPlanetas = (planetas *)malloc(num_planetas * sizeof(planetas));           //aster/planeta * losque haya)
+
 
     //INICIALIZAMOS LOS ASTEROIDES
     for (int i = 0; i < num_asteroides; i++)
@@ -132,12 +136,11 @@ int main(int argc, char const *argv[])
 
     ofstream myfile("init_conf.txt"); //Creamos el archivo al que deseamos enviar las configuraciones de planetas y asteroides
 
-    
-     for (int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         myfile << argv[i] << " ";
     }
-  
+
     myfile << endl;
 
     for (int i = 0; i < num_asteroides; i++)
@@ -184,7 +187,7 @@ int main(int argc, char const *argv[])
     outFile.close();
 
     auto t2 = clk::now();
-    auto diff = duration_cast<microseconds>(t2-t1);
+    auto diff = duration_cast<microseconds>(t2 - t1);
     cout << "Time= " << diff.count() << " microseconds" << endl;
 
     return 0;
@@ -201,12 +204,13 @@ double **tablaDeFuerzas(int num_asteroides, int num_planetas, planetas *arrayPla
     {
         tablaFx[i] = new double[cuerposTotales];
     }
-
-   
+ 
+    #pragma omp parallel
+    #pragma omp for
     for (int i = 0; i < cuerposTotales; i++)
     {
         tablaFx[i][i] = 0; //diagonal
-    
+
         for (int j = i + 1; j < cuerposTotales; j++)
         {
 
@@ -284,7 +288,9 @@ double **tablaDeFuerzasX(int num_asteroides, int num_planetas, planetas *arrayPl
     {
         tablaFx[i] = new double[cuerposTotales];
     }
-    
+
+    #pragma omp parallel
+    #pragma omp for
     for (int i = 0; i < cuerposTotales; i++)
     {
         tablaFx[i][i] = 0; //diagonal
@@ -334,6 +340,8 @@ double **tablaDeFuerzasY(int num_asteroides, int num_planetas, planetas *arrayPl
         tablaFy[i] = new double[cuerposTotales];
     }
 
+    #pragma omp parallel
+    #pragma omp for 
     for (int i = 0; i < cuerposTotales; i++)
     {
         tablaFy[i][i] = 0; //diagonal
@@ -493,25 +501,25 @@ void calculateRebotesParedes(asteroides *arrayAsteroides, int num_asteroides)
         //Calculamos los rebotes con las paredes
         if (arrayAsteroides[i].pos_x <= 0)
         {
-                                     //si el cuerpo se sale por la izquierda
+            //si el cuerpo se sale por la izquierda
             arrayAsteroides[i].pos_x = 2;                         //posicionamos en x=2
             arrayAsteroides[i].vel_x = -arrayAsteroides[i].vel_x; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_x >= width)
         { //si el cuerpo se sale por la derecha
-           
+
             arrayAsteroides[i].pos_x = width - 2;                 //posicionamos en x=198
             arrayAsteroides[i].vel_x = -arrayAsteroides[i].vel_x; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_y <= 0)
         { //si el cuerpo se sale por abajo
-            
+
             arrayAsteroides[i].pos_y = 2;                         //posicionamos en y=2
             arrayAsteroides[i].vel_y = -arrayAsteroides[i].vel_y; //cambiamos el sentido de la velocidad
         }
         if (arrayAsteroides[i].pos_y >= height)
         { //si el cuerpo se sale por abajo
-            
+
             arrayAsteroides[i].pos_y = height - 2;                //posicionamos en y=198
             arrayAsteroides[i].vel_y = -arrayAsteroides[i].vel_y; //cambiamos el sentido de la velocidad
         }
@@ -524,7 +532,7 @@ void calcularRebotesAsteroides(asteroides *arrayAsteroides, int num_asteroides)
     for (int i = 0; i < num_asteroides; i++)
     {
 
-        for (int j = i+1; j < num_asteroides; j++)
+        for (int j = i; j < num_asteroides; j++)
         {
             double distCuadrado = calculateDistanceAlCuadrado(arrayAsteroides[i], arrayAsteroides[j]);
             double raiz = sqrt(distCuadrado);
