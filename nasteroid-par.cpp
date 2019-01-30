@@ -15,6 +15,7 @@ using namespace std::chrono;
 class asteroides
 {
   public:
+  double pos_S;
     double pos_x;
     double pos_y;
     double masa;
